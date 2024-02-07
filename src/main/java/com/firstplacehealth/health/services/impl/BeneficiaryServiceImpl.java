@@ -1,6 +1,8 @@
 package com.firstplacehealth.health.services.impl;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,5 +33,25 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 			documentRepository.deleteAll(documentModels);
 		}
 		beneficiaryRepository.delete(beneficiaryModel);
+	}
+
+	@Override
+	public Optional<BeneficiaryModel> findById(UUID beneficiaryId) {
+		return beneficiaryRepository.findById(beneficiaryId);
+	}
+
+	@Override
+	public List<BeneficiaryModel> findAll() {
+		return beneficiaryRepository.findAll();
+	}
+
+	@Override
+	public Optional<BeneficiaryModel> findByName(String name) {
+		return beneficiaryRepository.findByName(name);
+	}
+
+	@Override
+	public BeneficiaryModel save(BeneficiaryModel beneficiaryModel) {
+		return beneficiaryRepository.save(beneficiaryModel);
 	}
 }
