@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.firstplacehealth.health.models.BeneficiaryModel;
 import com.firstplacehealth.health.models.DocumentModel;
 import com.firstplacehealth.health.repositories.DocumentRepository;
 import com.firstplacehealth.health.services.DocumentService;
@@ -24,6 +25,17 @@ public class DocumentServiceImpl implements DocumentService {
 	@Override
 	public DocumentModel save(DocumentModel documentModels) {
 		return documentRepository.save(documentModels);
+	}
+
+	@Override
+	public List<DocumentModel> findAll() {
+		return documentRepository.findAll();
+	}
+
+	@Override
+	public DocumentModel findByBeneficiaryId(BeneficiaryModel beneficiaryModel) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
