@@ -64,7 +64,7 @@ public class BeneficiaryModel implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
 	private LocalDateTime updateDate;
 	
-	@ToString.Exclude
+	//@ToString.Exclude
 	@JsonProperty(access = Access.WRITE_ONLY)
 	@OneToMany(mappedBy = "beneficiary", fetch = FetchType.LAZY)
 	@Fetch(FetchMode.SUBSELECT)

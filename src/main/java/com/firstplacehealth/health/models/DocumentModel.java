@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.firstplacehealth.health.enums.DocumentTypes;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -60,6 +61,6 @@ public class DocumentModel implements Serializable {
 	
 	@ToString.Exclude
 	@JsonProperty(access = Access.WRITE_ONLY)
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
 	private BeneficiaryModel beneficiary;
 }

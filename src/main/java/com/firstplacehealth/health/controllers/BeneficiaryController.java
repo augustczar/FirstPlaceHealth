@@ -2,6 +2,9 @@ package com.firstplacehealth.health.controllers;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,7 +30,9 @@ import com.firstplacehealth.health.models.BeneficiaryModel;
 import com.firstplacehealth.health.models.DocumentModel;
 import com.firstplacehealth.health.repositories.DocumentRepository;
 import com.firstplacehealth.health.services.BeneficiaryService;
+import com.firstplacehealth.health.services.DocumentService;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 
@@ -40,8 +45,9 @@ public class BeneficiaryController {
 	BeneficiaryService beneficiaryService;
 	
 	@Autowired
-	DocumentRepository documentRepository;
+	DocumentService documentService;
 	
+	@Transactional
 	@PostMapping
 	public ResponseEntity<Object> saveBeneficiary(@RequestBody @Valid BeneficiaryDto beneficiaryDto){
 		var beneficiaryName = beneficiaryService.findByName(beneficiaryDto.getName());
@@ -60,27 +66,27 @@ public class BeneficiaryController {
 		Optional<BeneficiaryModel> beneficiarySave =  Optional.of(beneficiaryService.save(beneficiaryModel));
 		
 		//@RequestBody @Valid DocumentDto documentDto
-		DocumentDto documentDto = new DocumentDto();
-		var documentModel = new DocumentModel();
+		
+		Collection<DocumentModel> documentList = new ArrayList<DocumentModel>();
 		//BeanUtils.copyProperties(documentDto, documentModel);
-		for (DocumentDto benefDoc : beneficiaryDto.getDocuments()) {		
-		documentModel.setDocumentTypes(benefDoc.getDocumentTypes());
-		documentModel.setDescription(benefDoc.getDescription());
-		documentModel.setBeneficiary(beneficiarySave.get());
-		documentModel.setInclusionDate(LocalDateTime.now(ZoneId.of("UTC")));
-		documentModel.setUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
+		for (DocumentDto benefDoc : beneficiaryDto.getDocuments()) {
+			DocumentModel documentModels = new DocumentModel();
+			documentModels.setDocumentTypes(benefDoc.getDocumentTypes());
+			documentModels.setDescription(benefDoc.getDescription());
+			
+			documentModels.setBeneficiary(beneficiarySave.get());
+			documentModels.setInclusionDate(LocalDateTime.now(ZoneId.of("UTC")));
+			documentModels.setUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
+			//documentList.add(documentModels);
+			documentService.save(documentModels);
 		}
-		documentRepository.save(documentModel);
+		//documentService.saveAll(documentList);
 		
-		var all = new Object();
-		all = beneficiaryModel;
-		all = documentModel;
-		
-		return ResponseEntity.status(HttpStatus.CREATED).body(all);
+		return ResponseEntity.status(HttpStatus.CREATED).body("Registration completed successfully!");
 		
 	}
 	
-	@DeleteMapping("{beneficiaryId}")
+	@DeleteMapping("/{beneficiaryId}/delete")
 	public ResponseEntity<Object> deleteBeneficiary(@PathVariable(value = "beneficiaryId") UUID beneficiaryId){
 		Optional<BeneficiaryModel> beneficiaryModelOptional = beneficiaryService.findById(beneficiaryId);
 		if(!beneficiaryModelOptional.isPresent()) {
@@ -90,7 +96,7 @@ public class BeneficiaryController {
 		return ResponseEntity.status(HttpStatus.OK).body("Beneficiary deleted successfully!");
 	}
 	
-	@PutMapping("{beneficiaryId}")
+	@PutMapping("/{beneficiaryId}/atualiza")
 	public ResponseEntity<Object> updateBeneficiary(@PathVariable(value = "beneficiaryId") UUID beneficiaryId,
 													@RequestBody @Valid BeneficiaryDto beneficiaryDto){
 		Optional<BeneficiaryModel> beneficiaryModelOptional = beneficiaryService.findById(beneficiaryId);
