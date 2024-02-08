@@ -1,6 +1,10 @@
 package com.firstplacehealth.health.dtos;
 
 import java.time.LocalDate;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.firstplacehealth.health.models.DocumentModel;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,6 +27,9 @@ public class BeneficiaryDto {
 	@NotBlank
 	private String telephone;
 
-	@NotBlank
+	@NotNull
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate birthDate;
+	
+	private Set<DocumentDto> documents;
 }

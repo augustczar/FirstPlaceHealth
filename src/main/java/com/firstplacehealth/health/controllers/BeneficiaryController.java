@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,22 +24,26 @@ import org.springframework.web.bind.annotation.RestController;
 import com.firstplacehealth.health.dtos.BeneficiaryDto;
 import com.firstplacehealth.health.dtos.DocumentDto;
 import com.firstplacehealth.health.models.BeneficiaryModel;
+import com.firstplacehealth.health.models.DocumentModel;
+import com.firstplacehealth.health.repositories.DocumentRepository;
 import com.firstplacehealth.health.services.BeneficiaryService;
 
 import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("/Beneficiary")
 @CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/beneficiary")
 public class BeneficiaryController {
 
 	@Autowired
 	BeneficiaryService beneficiaryService;
 	
+	@Autowired
+	DocumentRepository documentRepository;
+	
 	@PostMapping
-	public ResponseEntity<Object> saveBeneficiary(@RequestBody @Valid BeneficiaryDto beneficiaryDto,
-													@RequestBody @Valid DocumentDto documentDto){
+	public ResponseEntity<Object> saveBeneficiary(@RequestBody @Valid BeneficiaryDto beneficiaryDto){
 		var beneficiaryName = beneficiaryService.findByName(beneficiaryDto.getName());
 		
 		if (beneficiaryName.isPresent()) {
@@ -46,14 +51,32 @@ public class BeneficiaryController {
 		}
 		
 		var beneficiaryModel = new BeneficiaryModel();
-		BeanUtils.copyProperties(beneficiaryDto, beneficiaryModel);
+		//BeanUtils.copyProperties(beneficiaryDto, beneficiaryModel);
+		beneficiaryModel.setName(beneficiaryDto.getName());
+		beneficiaryModel.setBirthDate(beneficiaryDto.getBirthDate());
+		beneficiaryModel.setTelephone(beneficiaryDto.getTelephone());
 		beneficiaryModel.setInclusionDate(LocalDateTime.now(ZoneId.of("UTC")));
 		beneficiaryModel.setUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-		var beneficiarySave =  beneficiaryService.save(beneficiaryModel);
+		Optional<BeneficiaryModel> beneficiarySave =  Optional.of(beneficiaryService.save(beneficiaryModel));
 		
+		//@RequestBody @Valid DocumentDto documentDto
+		DocumentDto documentDto = new DocumentDto();
+		var documentModel = new DocumentModel();
+		//BeanUtils.copyProperties(documentDto, documentModel);
+		for (DocumentDto benefDoc : beneficiaryDto.getDocuments()) {		
+		documentModel.setDocumentTypes(benefDoc.getDocumentTypes());
+		documentModel.setDescription(benefDoc.getDescription());
+		documentModel.setBeneficiary(beneficiarySave.get());
+		documentModel.setInclusionDate(LocalDateTime.now(ZoneId.of("UTC")));
+		documentModel.setUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
+		}
+		documentRepository.save(documentModel);
 		
+		var all = new Object();
+		all = beneficiaryModel;
+		all = documentModel;
 		
-		return null;
+		return ResponseEntity.status(HttpStatus.CREATED).body(all);
 		
 	}
 	
