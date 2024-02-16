@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,12 +15,11 @@ import com.firstplacehealth.health.enums.DocumentTypes;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ import lombok.ToString;
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
+@DynamicUpdate
 @Table(name = "TB_DOCUMENT")
 public class DocumentModel implements Serializable {
 	
@@ -45,13 +47,11 @@ public class DocumentModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID documentId;
 	
-	@Enumerated(EnumType.STRING)
-	private DocumentTypes documentTypes;
+	private Integer documentTypes;
 	
 	@Column(nullable = false, length = 250)
  	private String description;
  	
-	@Column(nullable = false)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
 	private LocalDateTime inclusionDate;
 	
@@ -59,8 +59,19 @@ public class DocumentModel implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
 	private LocalDateTime updateDate;
 	
-	@ToString.Exclude
+	//@ToString.Exclude
 	@JsonProperty(access = Access.WRITE_ONLY)
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, optional = false)
+	@JoinColumn
 	private BeneficiaryModel beneficiary;
+	
+	public DocumentTypes getDocumentTypes() {
+		return DocumentTypes.valueOf(documentTypes);
+	}
+	
+	public void setDocumentTypes(DocumentTypes documentTypes) {
+		if(documentTypes != null) {
+			this.documentTypes = documentTypes.getCode();
+		}
+	}
 }

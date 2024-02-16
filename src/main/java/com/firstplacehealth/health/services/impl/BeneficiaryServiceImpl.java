@@ -27,8 +27,7 @@ public class BeneficiaryServiceImpl implements BeneficiaryService {
 	@Transactional
 	@Override
 	public void delete(BeneficiaryModel beneficiaryModel) {
-		List<DocumentModel> documentModels = documentRepository
-				.findAllDocumentIntoBeneficiary(beneficiaryModel.getBeneficiaryId());
+		List<DocumentModel> documentModels = documentRepository.findByBeneficiary(beneficiaryModel);
 		if (!documentModels.isEmpty()) {
 			documentRepository.deleteAll(documentModels);
 		}

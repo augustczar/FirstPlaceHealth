@@ -11,9 +11,8 @@ import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -56,7 +55,6 @@ public class BeneficiaryModel implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate birthDate;
 	
-	@Column(nullable = false)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
 	private LocalDateTime inclusionDate;
 	
@@ -65,8 +63,8 @@ public class BeneficiaryModel implements Serializable {
 	private LocalDateTime updateDate;
 	
 	//@ToString.Exclude
-	@JsonProperty(access = Access.WRITE_ONLY)
-	@OneToMany(mappedBy = "beneficiary", fetch = FetchType.LAZY)
+	//@JsonProperty(access = Access.WRITE_ONLY)
 	@Fetch(FetchMode.SUBSELECT)
+	@OneToMany(mappedBy = "beneficiary", cascade = {CascadeType.ALL, CascadeType.REMOVE},  fetch = FetchType.LAZY)
 	private Set<DocumentModel> documents;
 }

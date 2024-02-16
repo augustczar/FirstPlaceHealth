@@ -17,7 +17,6 @@ import lombok.ToString;
 @ToString
 public class DocumentDto {
 
-	@NotNull
 	private DocumentTypes documentTypes;
 
 	@NotBlank

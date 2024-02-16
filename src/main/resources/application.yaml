@@ -1,23 +1,23 @@
 server:
-  port: 8081
+  port: 8082
   servlet:
-    context-path: '/firstPlaceHealth/'
-  
+    context-path: '/firstPlaceHealth/'  
+
 spring:
   application:
     name: first-place-Health-service
   datasource:
     url: jdbc:postgresql://localhost:5432/firstPlaceHealth
     username: admin
-    password: 123
+    password: PO_postgres
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
       dialect: org.hobernate.dialect.PostgreSQLDialect
     jdbc: 
-        lob.non-contextual-creation: true
-        type:
+      lob.non-contextual-creation: true
+      type:
           descriptor:
             sql:trace
 #Configuração para windows terminal padrao de cores            
