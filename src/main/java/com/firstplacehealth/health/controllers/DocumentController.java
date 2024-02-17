@@ -18,10 +18,17 @@ import com.firstplacehealth.health.models.DocumentModel;
 import com.firstplacehealth.health.services.BeneficiaryService;
 import com.firstplacehealth.health.services.DocumentService;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/document")
+@Tag(name = "Saúde em primeiro lugar")
 public class DocumentController {
 
 	@Autowired
@@ -29,10 +36,14 @@ public class DocumentController {
 	
 	@Autowired
 	DocumentService documentService;
-	
-	/*
-	 * Listar todos os documentos de um beneficiário a partir de seu id
-	 */
+
+	@Operation(summary = "Listar todos os documentos de um beneficiário a partir de seu id", method = "GET")
+	@ApiResponses(value = {
+			@ApiResponse( responseCode = "200", description = "Busca realizada com sucesso! "),
+			@ApiResponse( responseCode = "422", description = "Dados da requisição inválidos!"),
+			@ApiResponse( responseCode = "400", description = "Parametros inválidos"),
+			@ApiResponse( responseCode = "500", description = "Error ao realizar busca Benefíciario!"),
+	})
 	@GetMapping("/beneficiary/{beneficiaryId}/list")
 	public ResponseEntity<Object> getAllDocumentByBeneficiay(@PathVariable(value = "beneficiaryId") UUID beneficiaryId){
 		Optional<BeneficiaryModel> beneficiaryModelOptional = beneficiaryService.findById(beneficiaryId);
@@ -45,6 +56,7 @@ public class DocumentController {
 		return ResponseEntity.status(HttpStatus.OK).body(documents);	
 	}
 	
+	@Hidden
 	@GetMapping
 	public ResponseEntity<List<DocumentModel>> getAllDocument() {
 		return ResponseEntity.status(HttpStatus.OK).body(documentService.findAll());

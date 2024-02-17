@@ -28,12 +28,18 @@ import com.firstplacehealth.health.models.DocumentModel;
 import com.firstplacehealth.health.services.BeneficiaryService;
 import com.firstplacehealth.health.services.DocumentService;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/beneficiary")
+@Tag(name = "Saúde em primeiro lugar")
 public class BeneficiaryController {
 
 	@Autowired
@@ -45,9 +51,14 @@ public class BeneficiaryController {
 	@Autowired
 	DocumentClient documentClient;
 
-	/*
-	 * Cadastrar um beneficiário junto com seus documentos
-	 */
+	
+	@Operation(summary = "Cadastrar um benefíciario junto com seus documentos", method = "POST")
+	@ApiResponses(value = {
+			@ApiResponse( responseCode = "200", description = "Benefíciario registrado com sucesso! "),
+			@ApiResponse( responseCode = "422", description = "Dados da requisição inválidos!"),
+			@ApiResponse( responseCode = "400", description = "Parametros inválidos"),
+			@ApiResponse( responseCode = "500", description = "Error ao registrar Benefíciario!"),
+	})
 	@Transactional
 	@PostMapping
 	public ResponseEntity<Object> saveBeneficiary(@RequestBody @Valid BeneficiaryDto beneficiaryDto) {
@@ -81,9 +92,13 @@ public class BeneficiaryController {
 
 	}
 
-	/*
-	 * Remover um beneficiário
-	 */
+	@Operation(summary = "Remover um beneficiário", method = "DELETE")
+	@ApiResponses(value = {
+			@ApiResponse( responseCode = "200", description = "Benefíciario removido com sucesso! "),
+			@ApiResponse( responseCode = "422", description = "Dados da requisição inválidos!"),
+			@ApiResponse( responseCode = "400", description = "Parametros inválidos"),
+			@ApiResponse( responseCode = "500", description = "Error ao remover Benefíciario!"),
+	})
 	@DeleteMapping("/{beneficiaryId}/delete")
 	public ResponseEntity<Object> deleteBeneficiary(@PathVariable(value = "beneficiaryId") UUID beneficiaryId) {
 		Optional<BeneficiaryModel> beneficiaryModelOptional = beneficiaryService.findById(beneficiaryId);
@@ -94,9 +109,13 @@ public class BeneficiaryController {
 		return ResponseEntity.status(HttpStatus.OK).body("Beneficiary deleted successfully!");
 	}
 
-	/*
-	 * Atualizar os dados cadastrais de um beneficiário
-	 */
+	@Operation(summary = "Atualizar os dados cadastrais de um beneficiário junto com os documentos", method = "PUT")
+	@ApiResponses(value = {
+			@ApiResponse( responseCode = "200", description = "Benefíciario atualizado com sucesso! "),
+			@ApiResponse( responseCode = "422", description = "Dados da requisição inválidos!"),
+			@ApiResponse( responseCode = "400", description = "Parametros inválidos"),
+			@ApiResponse( responseCode = "500", description = "Error ao atualizar Benefíciario!"),
+	})
 	@Transactional
 	@PutMapping("/{beneficiaryId}/update")
 	public ResponseEntity<Object> updateBeneficiary(@PathVariable(value = "beneficiaryId") UUID beneficiaryId,
@@ -118,9 +137,14 @@ public class BeneficiaryController {
 
 	}
 
-	/*
-	 * Atualizar os dados cadastrais de um beneficiário mais documentos
-	 */
+	@Hidden
+	@Operation(summary = "Atualizar os dados cadastrais de um beneficiário mais documentos", method = "PUT")
+	@ApiResponses(value = {
+			@ApiResponse( responseCode = "200", description = "Documento Benefíciario atualizado com sucesso! "),
+			@ApiResponse( responseCode = "422", description = "Dados da requisição inválidos!"),
+			@ApiResponse( responseCode = "400", description = "Parametros inválidos"),
+			@ApiResponse( responseCode = "500", description = "Error ao atualizar documento Benefíciario!"),
+	})
 	@Transactional
 	@PutMapping("/beneficiary/update")
 	public ResponseEntity<Void> updateBeneficiaryDocument(@RequestBody @Valid BeneficiaryDto beneficiaryDto,
@@ -149,6 +173,13 @@ public class BeneficiaryController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@Operation(summary = "Listar todos os beneficiários cadastrados", method = "GET")
+	@ApiResponses(value = {
+			@ApiResponse( responseCode = "200", description = "Busca realizada com sucesso! "),
+			@ApiResponse( responseCode = "422", description = "Dados da requisição inválidos!"),
+			@ApiResponse( responseCode = "400", description = "Parametros inválidos"),
+			@ApiResponse( responseCode = "500", description = "Error ao realizar busca dos Benefíciarios!"),
+	})
 	@GetMapping
 	public ResponseEntity<List<BeneficiaryModel>> getAllBeneficiary() {
 		return ResponseEntity.status(HttpStatus.OK).body(beneficiaryService.findAll());

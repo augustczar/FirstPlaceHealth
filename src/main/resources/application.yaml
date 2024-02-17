@@ -2,14 +2,13 @@ server:
   port: 8082
   servlet:
     context-path: '/firstPlaceHealth/'  
-
 spring:
   application:
     name: first-place-Health-service
   datasource:
     url: jdbc:postgresql://localhost:5432/firstPlaceHealth
     username: admin
-    password: PO_postgres
+    password: 123
   jpa:
     show-sql: true
     hibernate:
@@ -20,7 +19,14 @@ spring:
       type:
           descriptor:
             sql:trace
+            
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html      
+           
 #Configuração para windows terminal padrao de cores            
   output:
     ansi:
-      enabled: always
+      enabled: always      
