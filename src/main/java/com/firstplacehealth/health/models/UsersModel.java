@@ -45,12 +45,18 @@ public class UsersModel implements UserDetails, Serializable{
 	@Column(nullable = false, length = 100)
 	private String login;
 	
-	@Column(nullable = false, length = 100)
+	@Column(nullable = false, length = 250)
 	private String password;
 	
 	@Column(nullable = false, length = 50)
 	private UsersRoles role;
 
+	public UsersModel(String login, String password, UsersRoles role) {
+		this.login = login;
+		this.password = password;
+		this.role = role;
+	}
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		if (this.role == UsersRoles.ADMIN_USER) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),
