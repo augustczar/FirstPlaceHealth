@@ -6,19 +6,16 @@ spring:
   application:
     name: first-place-Health-service
   datasource:
+    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/firstPlaceHealth
     username: admin
-    password: 123
+    password: PO_postgres
+      
   jpa:
     show-sql: true
+    database: POSTGRESQL
     hibernate:
-      ddl-auto: update
-      dialect: org.hobernate.dialect.PostgreSQLDialect
-    jdbc: 
-      lob.non-contextual-creation: true
-      type:
-          descriptor:
-            sql:trace
+      ddl-auto: update 
             
 springdoc:
   api-docs:
