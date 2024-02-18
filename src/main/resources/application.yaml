@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: ${SERVER_PORT}
   servlet:
     context-path: '/firstPlaceHealth/'  
 spring:
@@ -7,9 +7,9 @@ spring:
     name: first-place-Health-service
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/firstPlaceHealth
-    username: admin
-    password: PO_postgres
+    url: ${POSTGRE_URL}
+    username: ${POSTGRE_USERNAME}
+    password: ${POSTGRE_PASSWORD}
       
   jpa:
     show-sql: true
@@ -22,6 +22,11 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html      
+
+openapi:
+  server:
+    url: ${OPEN_API_SERVER_URL}
+           
            
 #Configuração para windows terminal padrao de cores            
   output:

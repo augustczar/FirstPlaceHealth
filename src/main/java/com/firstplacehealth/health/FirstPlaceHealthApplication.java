@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "Saúde em primeiro lugar", version = "1.0.0", description = "API Cadastro de Beneficíarios"),
 		servers = {
-				@Server(url = "http://localhost:8082/firstPlaceHealth")
+				@Server(url = "${openapi.server.url}")
 		})
 public class FirstPlaceHealthApplication {
 
