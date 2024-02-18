@@ -129,7 +129,11 @@ public class BeneficiaryController {
 		beneficiaryModel.setName(beneficiaryDto.getName());
 		beneficiaryModel.setBirthDate(beneficiaryDto.getBirthDate());
 		beneficiaryModel.setTelephone(beneficiaryDto.getTelephone());
-		beneficiaryModel.setUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
+		var updateDate = (!beneficiaryModel.getName().equals(beneficiaryDto.getName()) ||
+		!beneficiaryModel.getBirthDate().equals(beneficiaryDto.getBirthDate()) ||
+		!beneficiaryModel.getTelephone().equals(beneficiaryDto.getTelephone())) 
+				? LocalDateTime.now(ZoneId.of("UTC")) :beneficiaryModel.getUpdateDate(); 
+		beneficiaryModel.setUpdateDate(updateDate);
 
 		BeneficiaryModel benficiaryModelUpdate = beneficiaryService.save(beneficiaryModel);
 		updateBeneficiaryDocument(beneficiaryDto, benficiaryModelUpdate);
@@ -166,7 +170,9 @@ public class BeneficiaryController {
 						documentModels.setDescription(benefDoc.getDescription());
 						documentModels.setBeneficiary(element.getBeneficiary());
 						documentModels.setInclusionDate(element.getInclusionDate());
-						documentModels.setUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
+						var updateDate = (!element.getDocumentTypes().name().equals(benefDoc.getDocumentTypes().name())
+								|| (!element.getDescription().equals(benefDoc.getDescription()))? LocalDateTime.now(ZoneId.of("UTC")) : element.getUpdateDate()); 
+						documentModels.setUpdateDate(updateDate);
 						documentService.save(documentModels);
 					});
 		}
