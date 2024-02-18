@@ -1,19 +1,17 @@
 package com.firstplacehealth.health.models;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.firstplacehealth.health.enums.UsersRoles;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -51,16 +49,19 @@ public class UsersModel implements UserDetails, Serializable{
 	private String password;
 	
 	@Column(nullable = false, length = 50)
-	private String role;
+	private UsersRoles role;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		if (this.role == UsersRoles.ADMIN_USER) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),
+				new SimpleGrantedAuthority("ROLE_USER"));
+		else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+		
 	}
 
 	@Override
 	public String getUsername() {
-		return null;
+		return login;
 	}
 
 	@Override
