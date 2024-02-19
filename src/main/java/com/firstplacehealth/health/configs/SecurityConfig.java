@@ -21,7 +21,7 @@ import com.firstplacehealth.health.component.SecurityFilter;
 public class SecurityConfig {
 	
 	@Autowired
-	SecurityFilter securityFilter;
+	private SecurityFilter securityFilter;
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {

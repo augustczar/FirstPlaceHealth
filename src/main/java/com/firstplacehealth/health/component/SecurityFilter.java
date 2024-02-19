@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.firstplacehealth.health.services.TokenService;
 import com.firstplacehealth.health.services.UsersService;
-import com.firstplacehealth.health.services.impl.TokenServiceImpl;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,10 +22,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SecurityFilter extends OncePerRequestFilter {
 
 	@Value("${api.authorization.header}")
-	String AUTORIZATION_HEADER;
+	private String AUTORIZATION_HEADER;
 	
-	@Autowired
-	TokenServiceImpl tokenServiceImpl;
+	TokenService tokenService;
 	
 	@Autowired
 	UsersService usersService;
@@ -34,7 +33,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
 		var token = this.recoverToken(request);
 		if (token != null) {
-			var login = tokenServiceImpl.validateToken((String) token);
+			var login = tokenService.validateToken((String) token);
 			UserDetails userDetails = (UserDetails) usersService.findByLogin(login);
 			
 			var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

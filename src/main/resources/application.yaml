@@ -32,10 +32,10 @@ api:
   tocken: 
     secret: ${JWT_SECRET:my-secret-key}           
  authorization:
-  header: "${AUTHORIZATION_HEADER}"
+  header: ${AUTHORIZATION_HEADER}
   generates:
     expiration:
-      hours: "${GENERATES_EXPIRATION_HOURS}"           
+      hours: ${GENERATES_EXPIRATION_HOURS}           
 #Configuração para windows terminal padrao de cores            
   output:
     ansi:

@@ -12,15 +12,16 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.firstplacehealth.health.models.UsersModel;
+import com.firstplacehealth.health.services.TokenService;
 
 @Service
-public class TokenServiceImpl {
+public class TokenServiceImpl implements TokenService{
 
 	@Value("${api.security.tocken.secret}")
 	private String SECRET;
 
-	@Value("${api.generates.expiration.hours}")
-	private long HOURS;
+//	@Value("${api.generates.expiration.hours}")
+//	private long HOURS;
 	
 	public String generationToken(UsersModel usersModel) {
 		try {
@@ -50,6 +51,6 @@ public class TokenServiceImpl {
 	}
 	
 	private Instant generatesExpirationDate() {
-		return LocalDateTime.now().plusHours(HOURS).toInstant(ZoneOffset.of("-03:00"));
+		return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
 	}
 }

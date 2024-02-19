@@ -15,8 +15,8 @@ import com.firstplacehealth.health.dtos.AuthenticationDto;
 import com.firstplacehealth.health.dtos.LoginResponseDto;
 import com.firstplacehealth.health.dtos.RegisterDto;
 import com.firstplacehealth.health.models.UsersModel;
+import com.firstplacehealth.health.services.TokenService;
 import com.firstplacehealth.health.services.UsersService;
-import com.firstplacehealth.health.services.impl.TokenServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -31,15 +31,14 @@ public class AuthenticationController {
 	@Autowired
 	private UsersService  usersService;
 	
-	@Autowired
-	private TokenServiceImpl tokenServiceImpl;
+	private TokenService tokenService;
 	
 	@PostMapping("/login")
 	public ResponseEntity<Object> login(@RequestBody @Valid AuthenticationDto authenticationDto) {
 		var usernamePassword = new UsernamePasswordAuthenticationToken(authenticationDto.login(), authenticationDto.password());
 		var auth = this.authenticationManager.authenticate(usernamePassword);
 		
-		var token = tokenServiceImpl.generationToken((UsersModel) auth.getPrincipal());
+		var token = tokenService.generationToken((UsersModel) auth.getPrincipal());
 		
 		return ResponseEntity.ok(new LoginResponseDto(token));
 	}
