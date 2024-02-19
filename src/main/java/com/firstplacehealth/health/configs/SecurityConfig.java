@@ -26,6 +26,12 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity
+				.securityMatcher("\"/v2/api-docs\",\n"
+						+ "                                   \"/firstPlaceHealth/configuration/ui\",\n"
+						+ "                                   \"/firstPlaceHealth/swagger-resources/**\",\n"
+						+ "                                   \"/firstPlaceHealth/configuration/security\",\n"
+						+ "                                   \"/firstPlaceHealth/swagger-ui.html\",\n"
+						+ "                                   \"/firstPlaceHealth/webjars/**\"")
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
@@ -33,6 +39,7 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.POST, "/authuser/register").permitAll()
 						.requestMatchers(HttpMethod.POST, "/beneficiary").hasRole("ADMIN_USER")
 						.requestMatchers(HttpMethod.PUT, "/beneficiary").hasRole("ADMIN_USER")
+						.requestMatchers("*/v3/**", "/swagger-ui/**",  "/firstPlaceHealth").permitAll()
 						.anyRequest().authenticated()
 						)
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
