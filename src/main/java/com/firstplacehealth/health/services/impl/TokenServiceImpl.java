@@ -17,11 +17,14 @@ import com.firstplacehealth.health.models.UsersModel;
 public class TokenServiceImpl {
 
 	@Value("${api.security.tocken.secret}")
-	private String secret;
+	private String SECRET;
+
+	@Value("${api.generates.expiration.hours}")
+	private long HOURS;
 	
 	public String generationToken(UsersModel usersModel) {
 		try {
-			Algorithm algorithm = Algorithm.HMAC256(secret);
+			Algorithm algorithm = Algorithm.HMAC256(SECRET);
 			String token = JWT.create()
 					.withIssuer("auth-api")
 					.withSubject(usersModel.getLogin())
@@ -35,7 +38,7 @@ public class TokenServiceImpl {
 	
 	public String validateToken(String token) {
 		try {
-			Algorithm algorithm = Algorithm.HMAC256(secret);
+			Algorithm algorithm = Algorithm.HMAC256(SECRET);
 			return JWT.require(algorithm)
 					.withIssuer("auth-api")
 					.build()
@@ -47,6 +50,6 @@ public class TokenServiceImpl {
 	}
 	
 	private Instant generatesExpirationDate() {
-		return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+		return LocalDateTime.now().plusHours(HOURS).toInstant(ZoneOffset.of("-03:00"));
 	}
 }
