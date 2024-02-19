@@ -1,6 +1,5 @@
 package com.firstplacehealth.health.controllers;
 
-import org.hibernate.dialect.function.array.H2ArrayContainsFunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.firstplacehealth.health.dtos.AuthenticationDto;
+import com.firstplacehealth.health.dtos.LoginResponseDto;
 import com.firstplacehealth.health.dtos.RegisterDto;
 import com.firstplacehealth.health.models.UsersModel;
 import com.firstplacehealth.health.services.UsersService;
+import com.firstplacehealth.health.services.impl.TokenServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -28,14 +29,19 @@ public class AuthenticationController {
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
-	UsersService  usersService;
+	private UsersService  usersService;
+	
+	@Autowired
+	private TokenServiceImpl tokenServiceImpl;
 	
 	@PostMapping("/login")
 	public ResponseEntity<Object> login(@RequestBody @Valid AuthenticationDto authenticationDto) {
 		var usernamePassword = new UsernamePasswordAuthenticationToken(authenticationDto.login(), authenticationDto.password());
 		var auth = this.authenticationManager.authenticate(usernamePassword);
 		
-		return ResponseEntity.ok().build();
+		var token = tokenServiceImpl.generationToken((UsersModel) auth.getPrincipal());
+		
+		return ResponseEntity.ok(new LoginResponseDto(token));
 	}
 	
 	@PostMapping("/register")

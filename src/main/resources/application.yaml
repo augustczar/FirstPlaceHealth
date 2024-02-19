@@ -26,8 +26,13 @@ springdoc:
 openapi:
   server:
     url: ${OPEN_API_SERVER_URL}
-           
-           
+
+api:
+ security:
+  tocken: 
+    secret: ${JWT_SECRET:my-secret-key}           
+ authorization:
+  header: "${AUTHORIZATION_HEADER}"          
 #Configuração para windows terminal padrao de cores            
   output:
     ansi:
