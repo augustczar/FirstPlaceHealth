@@ -105,7 +105,7 @@ https://github.com/augustczar/FirstPlaceHealth
 
 - Listar todos os documentos de um beneficiário a partir de seu id
 	- GET
-	- http://localhost:port/firstPlaceHealth/document/beneficiary/id_do_beneficiario_a ser_listado/list  
+	- http://localhost:port/firstPlaceHealth/document/beneficiary/id_do_beneficiario_a_ser_listado/list  
 
 
 - Atualizar os dados cadastrais de um beneficiário:
@@ -129,4 +129,4 @@ https://github.com/augustczar/FirstPlaceHealth
 
 - Remover um beneficiário.
 	- DELETE
-	- http://localhost:port/firstPlaceHealth/beneficiary/id_do_usuario_a ser_excluido/delete
+	- http://localhost:port/firstPlaceHealth/beneficiary/id_do_usuario_a_ser_excluido/delete
