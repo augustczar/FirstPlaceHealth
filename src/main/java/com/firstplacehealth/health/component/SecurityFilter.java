@@ -24,6 +24,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 	@Value("${api.authorization.header}")
 	private String AUTORIZATION_HEADER;
 	
+	@Autowired
 	TokenService tokenService;
 	
 	@Autowired

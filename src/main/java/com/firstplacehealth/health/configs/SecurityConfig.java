@@ -26,12 +26,7 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity
-				.securityMatcher("\"/v2/api-docs\",\n"
-						+ "                                   \"/firstPlaceHealth/configuration/ui\",\n"
-						+ "                                   \"/firstPlaceHealth/swagger-resources/**\",\n"
-						+ "                                   \"/firstPlaceHealth/configuration/security\",\n"
-						+ "                                   \"/firstPlaceHealth/swagger-ui.html\",\n"
-						+ "                                   \"/firstPlaceHealth/webjars/**\"")
+				.securityMatcher("*/v3/**", "/swagger-ui/**",  "/firstPlaceHealth")
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize

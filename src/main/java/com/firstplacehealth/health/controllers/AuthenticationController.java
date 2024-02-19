@@ -31,6 +31,7 @@ public class AuthenticationController {
 	@Autowired
 	private UsersService  usersService;
 	
+	@Autowired
 	private TokenService tokenService;
 	
 	@PostMapping("/login")
