@@ -38,6 +38,16 @@ https://github.com/augustczar/FirstPlaceHealth
 - Facil configuração no eclipse com seu projeto selecionado:
 	- Run - Run Configurations - Environment
 
+	* AUTHORIZATION_HEADER=Authorization
+	
+	
+	* JWT_SECRET=sua frase secreta  
+	* OPEN_API_SERVER_URL=http://localhost:sua porta/firstPlaceHealth 
+	* POSTGRE_PASSWORD=senha postgres  
+	* POSTGRE_USERNAME=admin  
+	* POSTGRE_URL=jdbc:postgresql://localhost:5432/firstPlaceHealth  
+	* SERVER_PORT=sua porta
+
 ## Authenticando no projeto
  - Utilizar sua porta disponivel exemplo: 
 	- port:8080  
