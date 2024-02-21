@@ -42,7 +42,7 @@ https://github.com/augustczar/FirstPlaceHealth
 	
 	
 	* JWT_SECRET=sua frase secreta  
-	* OPEN_API_SERVER_URL=http://localhost:sua porta/firstPlaceHealth 
+	* OPEN_API_SERVER_URL=http://localhost:sua_porta/firstPlaceHealth 
 	* POSTGRE_PASSWORD=senha postgres  
 	* POSTGRE_USERNAME=admin  
 	* POSTGRE_URL=jdbc:postgresql://localhost:5432/firstPlaceHealth  
