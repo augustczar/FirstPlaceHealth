@@ -85,7 +85,7 @@ https://github.com/augustczar/FirstPlaceHealth
 }  
 
 
-## Endpoints de navegação do projeto utilizando o Postman, Insomnia ou Swagger nas silulações.
+## Endpoints de navegação do projeto utilizando o Postman, Insomnia ou Swagger nas simulações.
  - Utilizar sua porta disponivel exemplo: 
 	- port:8080  
 	
