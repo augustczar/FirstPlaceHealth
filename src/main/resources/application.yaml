@@ -39,4 +39,5 @@ api:
 #Configuração para windows terminal padrao de cores            
   output:
     ansi:
-      enabled: always      
+      enabled: always
+            

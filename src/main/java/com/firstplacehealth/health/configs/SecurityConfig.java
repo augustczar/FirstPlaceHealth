@@ -26,16 +26,18 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity
-				.securityMatcher("*/v3/**", "/swagger-ui/**",  "/firstPlaceHealth")
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers(HttpMethod.POST, "/authuser/login").permitAll()
 						.requestMatchers(HttpMethod.POST, "/authuser/register").permitAll()
-						.requestMatchers(HttpMethod.POST, "/beneficiary").hasRole("ADMIN_USER")
-						.requestMatchers(HttpMethod.PUT, "/beneficiary").hasRole("ADMIN_USER")
+						.requestMatchers(HttpMethod.GET, "/beneficiary").hasRole("USER")
+						.requestMatchers(HttpMethod.POST, "/beneficiary").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/beneficiary/*/update").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/beneficiary/*/delete").hasRole("ADMIN")
 						.requestMatchers("*/v3/**", "/swagger-ui/**",  "/firstPlaceHealth").permitAll()
-						.anyRequest().authenticated()
+						.anyRequest().denyAll()
+						//.anyRequest().authenticated()
 						)
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
