@@ -51,6 +51,6 @@ public class TokenServiceImpl implements TokenService{
 	}
 	
 	private Instant generatesExpirationDate() {
-		return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+		return LocalDateTime.now().plusMinutes(2).toInstant(ZoneOffset.of("-03:00"));
 	}
 }

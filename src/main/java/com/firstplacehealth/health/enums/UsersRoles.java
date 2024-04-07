@@ -2,8 +2,8 @@ package com.firstplacehealth.health.enums;
 
 public enum UsersRoles {
 
-	ADMIN_USER("admin"),
-	COMMON_USER("user");
+	ADMIN_USER("ADMIN"),
+	COMMON_USER("USER");
 	
 	private String role;
 	

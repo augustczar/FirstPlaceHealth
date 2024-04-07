@@ -48,6 +48,11 @@ https://github.com/augustczar/FirstPlaceHealth
 	* POSTGRE_URL=jdbc:postgresql://localhost:5432/firstPlaceHealth  
 	* SERVER_PORT=sua porta
 
+## Documentação Swagger
+ - http://localhost:port/firstPlaceHealth/swagger-ui/index.html
+ - Utilizar sua porta configurada na aplicação, exemplo: 
+	- port:8080  
+
 ## Authenticando no projeto
  - Utilizar sua porta disponivel exemplo: 
 	- port:8080  
