@@ -101,7 +101,7 @@ public class BeneficiaryController {
 			@ApiResponse( responseCode = "500", description = "Error ao remover Benefíciario!"),
 	})
 	@DeleteMapping("/{beneficiaryId}/delete")
-	public ResponseEntity<Object> deleteBeneficiary(@PathVariable(value = "beneficiaryId") UUID beneficiaryId) {
+	public ResponseEntity<Object> deleteBeneficiary(@PathVariable UUID beneficiaryId) {
 		Optional<BeneficiaryModel> beneficiaryModelOptional = beneficiaryService.findById(beneficiaryId);
 		if (!beneficiaryModelOptional.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Beneficiary not found!");
@@ -119,7 +119,7 @@ public class BeneficiaryController {
 	})
 	@Transactional
 	@PutMapping("/{beneficiaryId}/update")
-	public ResponseEntity<Object> updateBeneficiary(@PathVariable(value = "beneficiaryId") UUID beneficiaryId,
+	public ResponseEntity<Object> updateBeneficiary(@PathVariable UUID beneficiaryId,
 			@RequestBody @Valid BeneficiaryDto beneficiaryDto) {
 		Optional<BeneficiaryModel> beneficiaryModelOptional = beneficiaryService.findById(beneficiaryId);
 		if (!beneficiaryModelOptional.isPresent()) {

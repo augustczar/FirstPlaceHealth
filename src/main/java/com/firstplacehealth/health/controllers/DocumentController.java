@@ -45,7 +45,7 @@ public class DocumentController {
 			@ApiResponse( responseCode = "500", description = "Error ao realizar busca Benefíciario!"),
 	})
 	@GetMapping("/beneficiary/{beneficiaryId}/list")
-	public ResponseEntity<Object> getAllDocumentByBeneficiay(@PathVariable(value = "beneficiaryId") UUID beneficiaryId){
+	public ResponseEntity<Object> getAllDocumentByBeneficiay(@PathVariable UUID beneficiaryId){
 		Optional<BeneficiaryModel> beneficiaryModelOptional = beneficiaryService.findById(beneficiaryId);
  		if (!beneficiaryModelOptional.isPresent()) {
  			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Beneficiary Not Found!");
